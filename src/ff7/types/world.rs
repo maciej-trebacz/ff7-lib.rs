@@ -12,3 +12,20 @@ pub struct WorldModel {
     pub location_id: u8,
     pub chocobo_tracks: bool,
 }
+
+/*
+short	x
+short	y
+short	triangleId
+ushort	fieldId
+byte	direction
+byte[3]	padding
+*/
+#[derive(Serialize)]
+pub struct WorldFieldTblItem {
+    pub x: i16,
+    pub y: i16,
+    pub triangle_id: u16,
+    pub field_id: u16,
+    pub direction: u8,
+}

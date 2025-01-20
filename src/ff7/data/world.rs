@@ -1,5 +1,5 @@
 use crate::ff7::addresses::FF7Addresses;
-use crate::ff7::types::world::WorldModel;
+use crate::ff7::types::world::{WorldModel, WorldFieldTblItem};
 use crate::utils::memory::*;
 
 pub fn read_world_current_model(addresses: &FF7Addresses) -> Result<WorldModel, String> {
@@ -78,4 +78,19 @@ pub fn get_chocobo_rating_for_scene(scene_id: u32) -> Result<u32, String> {
     }
 
     Ok(0)
+}
+
+pub fn read_world_field_tbl_data(addresses: &FF7Addresses) -> Result<Vec<WorldFieldTblItem>, String> {
+    let mut items: Vec<WorldFieldTblItem> = Vec::new();
+    for i in 0..64 {
+        let item = WorldFieldTblItem {
+            x: read_memory_signed_short(addresses.world_field_tbl_data + i * 24 + 0x00)?,
+            y: read_memory_signed_short(addresses.world_field_tbl_data + i * 24 + 0x02)?,
+            triangle_id: read_memory_short(addresses.world_field_tbl_data + i * 24 + 0x04)?,
+            field_id: read_memory_short(addresses.world_field_tbl_data + i * 24 + 0x06)?,
+            direction: read_memory_byte(addresses.world_field_tbl_data + i * 24 + 0x08)?,
+        };
+        items.push(item);
+    }
+    Ok(items)
 }

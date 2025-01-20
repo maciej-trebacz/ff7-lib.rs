@@ -66,6 +66,7 @@ pub struct FF7Addresses {
     pub key_items: u32,
     pub character_records: u32,
     pub party_objects: u32,
+    pub world_field_tbl_data: u32,
 
     // Frontend fields
     pub field_obj_ptr: u32,
@@ -92,6 +93,8 @@ pub struct FF7Addresses {
     pub menu_always_enabled: u32,
     pub field_models_coords: u32,
     pub menu_load_key_items_fn: u32,
+    pub world_load_data_fn: u32,
+    pub str_field_tbl: u32,
 }
 
 impl FF7Addresses {
@@ -161,6 +164,7 @@ impl FF7Addresses {
             key_items: 0xdc091c,
             character_records: 0xdbfd8c,
             party_objects: 0xdba498,
+            world_field_tbl_data: 0xe37d30,
 
             // Frontend fields
             field_obj_ptr: 0xcbf9d8,
@@ -187,6 +191,8 @@ impl FF7Addresses {
             menu_always_enabled: 0x6ca38c,
             field_models_coords: 0xcc167c,
             menu_load_key_items_fn: 0x714fa3,
+            world_load_data_fn: 0x75931b,
+            str_field_tbl: 0x969b10,
         }
     }
 }
