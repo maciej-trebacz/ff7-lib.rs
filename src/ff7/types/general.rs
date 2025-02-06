@@ -41,4 +41,4 @@ pub struct FF7BasicData {
     pub world_speed_multiplier: u8,
     pub party_member_ids: Vec<u8>,
     pub key_items: Vec<u8>,
-}
+} 

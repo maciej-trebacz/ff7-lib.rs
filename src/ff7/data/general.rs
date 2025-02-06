@@ -1,5 +1,5 @@
 use crate::ff7::addresses::FF7Addresses;
-use crate::ff7::types::basic::FF7BasicData;
+use crate::ff7::types::general::FF7BasicData;
 use crate::utils::memory::*;
 
 pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String> {
@@ -51,3 +51,18 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         key_items: read_memory_buffer(addresses.key_items, 8)?,
     })
 }
+
+pub fn read_variables_bank(bank: u32, addresses: &FF7Addresses) -> Result<Vec<u8>, String> {
+    Ok(read_memory_buffer(addresses.savemap + 0xba4 + (bank - 1) * 0x100, 0x100)?)
+}
+
+pub fn write_variable_8bit(bank: u32, address: u32, value: u8, addresses: &FF7Addresses) -> Result<(), String> {
+    write_memory_byte(addresses.savemap + 0xba4 + (bank - 1) * 0x100 + address, value)?;
+    Ok(())
+}
+
+pub fn write_variable_16bit(bank: u32, address: u32, value: u16, addresses: &FF7Addresses) -> Result<(), String> {
+    write_memory_short(addresses.savemap + 0xba4 + (bank - 1) * 0x100 + address, value)?;
+    Ok(())
+}
+

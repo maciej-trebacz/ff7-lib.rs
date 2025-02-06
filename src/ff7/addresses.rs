@@ -67,6 +67,8 @@ pub struct FF7Addresses {
     pub character_records: u32,
     pub party_objects: u32,
     pub world_field_tbl_data: u32,
+    pub world_mes_data: u32,
+    pub savemap: u32,
 
     // Frontend fields
     pub field_obj_ptr: u32,
@@ -165,6 +167,8 @@ impl FF7Addresses {
             character_records: 0xdbfd8c,
             party_objects: 0xdba498,
             world_field_tbl_data: 0xe37d30,
+            world_mes_data: 0xe36120,
+            savemap: 0xdbfd38,
 
             // Frontend fields
             field_obj_ptr: 0xcbf9d8,

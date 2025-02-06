@@ -84,3 +84,7 @@ pub fn get_pid() -> Option<Pid> {
     let pid = SCANNER.lock().get_pid();
     return pid;
 }
+
+pub fn is_ff7_running() -> bool {
+    SCANNER.lock().get_pid().is_some()
+}
