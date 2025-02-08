@@ -4,6 +4,7 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct BattleCharObj {
+    pub index: u8,
     pub name: String,
     pub flags: u8,
     pub status: u32,

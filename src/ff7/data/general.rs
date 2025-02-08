@@ -14,6 +14,7 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         game_moment: read_memory_short(addresses.game_moment)?,
         field_id: read_memory_short(addresses.field_id)?,
         field_fps: read_memory_float(addresses.field_fps)?,
+        field_current_model_id: read_memory_short(addresses.field_current_model_id)?,
         battle_fps: read_memory_float(addresses.battle_fps)?,
         world_fps: read_memory_float(addresses.world_fps)?,
         in_game_time: read_memory_int(addresses.in_game_time)?,

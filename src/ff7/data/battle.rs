@@ -23,6 +23,7 @@ pub fn read_battle_allies(addresses: &FF7Addresses) -> Result<Vec<BattleCharObj>
     for i in 0..3 {
         let name = party_names[i as usize].clone();
         let char = BattleCharObj {
+            index: i as u8,
             name,
             status: read_memory_int(addresses.battle_char_base + i * char_obj_length)?,
             flags: read_memory_byte(addresses.battle_char_base + i * char_obj_length + 0x5)?,
@@ -51,6 +52,7 @@ pub fn read_battle_enemies(addresses: &FF7Addresses) -> Result<Vec<BattleCharObj
             read_name(addresses.enemy_data_base + u32::from(enemy_scene_idx) * enemy_data_length);
 
         let char = BattleCharObj {
+            index: i as u8,
             name: enemy_name.unwrap_or_else(|_| String::from("???")),
             status: read_memory_int(addresses.battle_char_base + i * char_obj_length)?,
             flags: read_memory_byte(addresses.battle_char_base + i * char_obj_length + 0x5)?,

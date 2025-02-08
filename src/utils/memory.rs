@@ -1,17 +1,23 @@
 use crate::utils::process;
-use process_memory::{CopyAddress, DataMember, Memory, Pid, PutAddress, TryIntoProcessHandle};
+use process_memory::{CopyAddress, DataMember, Memory, PutAddress, ProcessHandle};
 use std::backtrace::Backtrace;
 use winapi::um::memoryapi::VirtualProtectEx;
 use winapi::um::winnt::{PAGE_EXECUTE_READWRITE, PVOID};
 
-fn get_process_handle() -> Result<process_memory::ProcessHandle, String> {
-    process::get_pid()
+fn handle_memory_error(err: impl std::fmt::Display, address: u32) -> String {
+    // Invalidate the handle so we can get a fresh one
+    process::invalidate_handle();
+    format!(
+        "Could not access memory at address 0x{:08X}\nError: {}\nBacktrace: {}",
+        address,
+        err,
+        Backtrace::force_capture()
+    )
+}
+
+fn get_process_handle() -> Result<ProcessHandle, String> {
+    process::get_process_handle()
         .ok_or_else(|| "Process not found".to_string())
-        .and_then(|pid| {
-            (pid.as_u32() as Pid)
-                .try_into_process_handle()
-                .map_err(|_| "Failed to get process handle".to_string())
-        })
 }
 
 fn access_memory<T: Copy, F>(address: u32, operation: F) -> Result<T, String>
@@ -26,19 +32,13 @@ where
 
 fn read_memory<T: Copy>(address: u32) -> Result<T, String> {
     access_memory(address, |value| unsafe {
-        value.read().map_err(|_| {
-            format!(
-                "Could not read memory at address 0x{:08X}\nBacktrace: {}",
-                address,
-                Backtrace::force_capture()
-            )
-        })
+        value.read().map_err(|e| handle_memory_error(e, address))
     })
 }
 
 fn write_memory<T: Copy>(address: u32, new_value: T) -> Result<(), String> {
     access_memory(address, |value| {
-        let _ = value.write(&new_value);
+        value.write(&new_value).map_err(|e| handle_memory_error(e, address))?;
         Ok(new_value)
     })?;
     Ok(())
@@ -73,20 +73,15 @@ pub fn read_memory_buffer(address: u32, size: usize) -> Result<Vec<u8>, String> 
     let mut buf = vec![0u8; size];
     handle
         .copy_address(address as usize, &mut buf)
-        .map_err(|_| {
-            format!(
-                "Could not read {} bytes at address 0x{:08X}\nBacktrace: {}",
-                size,
-                address,
-                Backtrace::force_capture()
-            )
-        })?;
+        .map_err(|e| handle_memory_error(e, address))?;
     Ok(buf)
 }
 
 pub fn write_memory_buffer(address: u32, mut buffer: Vec<u8>) -> Result<(), String> {
     let handle = get_process_handle()?;
-    let _ = handle.put_address(address as usize, &mut buffer);
+    handle
+        .put_address(address as usize, &mut buffer)
+        .map_err(|e| handle_memory_error(e, address))?;
     Ok(())
 }
 
@@ -129,7 +124,7 @@ pub fn set_memory_protection(address: u32, size: usize) -> Result<(), String> {
     };
 
     if result == 0 {
-        Err("Failed to change memory protection".to_string())
+        Err(handle_memory_error("Failed to change memory protection", address))
     } else {
         Ok(())
     }

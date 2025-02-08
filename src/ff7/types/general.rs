@@ -6,6 +6,7 @@ pub struct FF7BasicData {
     pub game_moment: u16,
     pub field_id: u16,
     pub field_fps: f64,
+    pub field_current_model_id: u16,
     pub battle_fps: f64,
     pub world_fps: f64,
     pub in_game_time: u32,

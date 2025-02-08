@@ -6,6 +6,7 @@ pub struct FieldModel {
     pub y: i32,
     pub z: i32,
     pub direction: u8,
+    pub triangle: u16,
 }
 
 #[derive(Serialize)]
