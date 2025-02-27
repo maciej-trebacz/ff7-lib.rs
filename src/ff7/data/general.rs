@@ -9,6 +9,13 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         read_memory_byte(addresses.party_member_ids + 2)?,
     ];
 
+    let zolom_current_ptr = read_memory_int(addresses.zolom_current_ptr)?;
+    let zolom_coords = if zolom_current_ptr == 0 {
+        0
+    } else {
+        read_memory_int(zolom_current_ptr)?
+    };
+
     Ok(FF7BasicData {
         current_module: read_memory_short(addresses.current_module)?,
         game_moment: read_memory_short(addresses.game_moment)?,
@@ -50,6 +57,8 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         world_speed_multiplier: read_memory_byte(addresses.world_speed_multiplier)?,
         party_member_ids: party_member_ids_vec,
         key_items: read_memory_buffer(addresses.key_items, 8)?,
+        zolom_coords: zolom_coords,
+        world_map_type: read_memory_byte(addresses.world_map_type)?,
     })
 }
 

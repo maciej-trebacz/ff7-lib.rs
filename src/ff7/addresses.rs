@@ -71,6 +71,10 @@ pub struct FF7Addresses {
     pub world_field_tbl_data: u32,
     pub world_mes_data: u32,
     pub savemap: u32,
+    pub field_script_obj_ptr: u32,
+    pub field_script_temp_vars: u32,
+    pub zolom_current_ptr: u32,
+    pub world_map_type: u32,
 
     // Frontend fields
     pub field_obj_ptr: u32,
@@ -173,6 +177,10 @@ impl FF7Addresses {
             world_field_tbl_data: 0xe37d30,
             world_mes_data: 0xe36120,
             savemap: 0xdbfd38,
+            field_script_obj_ptr: 0xcc0b60,
+            field_script_temp_vars: 0xcc14d0,
+            zolom_current_ptr: 0xe2a18c,
+            world_map_type: 0xe045e8,
 
             // Frontend fields
             field_obj_ptr: 0xcbf9d8,

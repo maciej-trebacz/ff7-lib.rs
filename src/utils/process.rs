@@ -12,6 +12,7 @@ use process_memory::{ProcessHandle, Pid as ProcPid, TryIntoProcessHandle};
 struct ProcessInfo {
     handle: Option<ProcessHandle>,
     previous_pid: Option<SysPid>,
+    current_dir: Option<String>,
 }
 
 // ProcessHandle isn't Send/Sync by default, so we need to implement it
@@ -30,6 +31,7 @@ impl ProcessScanner {
             process_info: Arc::new(Mutex::new(ProcessInfo { 
                 handle: None,
                 previous_pid: None,
+                current_dir: None,
             })),
             is_scanning: Arc::new(AtomicBool::new(false)),
         }
@@ -77,6 +79,7 @@ impl ProcessScanner {
                         if info.previous_pid != Some(pid) {
                             println!("Found process PID: {} with path {}", pid, cwd);
                             info.previous_pid = Some(pid);
+                            info.current_dir = Some(cwd);
                         }
                         Some(pid)
                     }
@@ -90,6 +93,7 @@ impl ProcessScanner {
                 if found_process.is_none() && info.previous_pid.is_some() {
                     println!("Game disconnected");
                     info.previous_pid = None;
+                    info.current_dir = None;
                 }
 
                 match found_process {
@@ -117,6 +121,10 @@ impl ProcessScanner {
         info.handle = None;
         info.previous_pid = None;
     }
+
+    fn get_current_dir(&self) -> Option<String> {
+        self.process_info.lock().current_dir.clone()
+    }
 }
 
 lazy_static! {
@@ -133,6 +141,10 @@ pub fn get_process_handle() -> Option<ProcessHandle> {
 
 pub fn invalidate_handle() {
     SCANNER.lock().invalidate_handle();
+}
+
+pub fn get_current_dir() -> Option<String> {
+    SCANNER.lock().get_current_dir()
 }
 
 pub fn is_ff7_running() -> bool {
