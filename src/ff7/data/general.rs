@@ -59,6 +59,8 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         key_items: read_memory_buffer(addresses.key_items, 8)?,
         zolom_coords: zolom_coords,
         world_map_type: read_memory_byte(addresses.world_map_type)?,
+        field_skip_dialogues_check: read_memory_byte(addresses.field_skip_dialogues)?,
+        field_tmp_vars: read_memory_buffer(addresses.field_script_temp_vars, 0x10)?,
     })
 }
 

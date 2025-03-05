@@ -44,4 +44,6 @@ pub struct FF7BasicData {
     pub key_items: Vec<u8>,
     pub zolom_coords: u32,
     pub world_map_type: u8,
+    pub field_skip_dialogues_check: u8,
+    pub field_tmp_vars: Vec<u8>,
 } 
