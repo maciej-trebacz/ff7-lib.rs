@@ -10,17 +10,19 @@ pub fn read_field_models(addresses: &FF7Addresses) -> Result<Vec<FieldModel>, St
     if model_ptr == 0 {
         return Ok(models);
     }
-    let model_triangle_ptr = addresses.field_model_triangle;
 
     for i in 0..models_num {
         let base_address = model_ptr + i * 400;
-        let model_triangle_address = model_triangle_ptr + i * 0x88;
+        let base_address_2 = addresses.field_models_objs + i * 0x88;
         let model = FieldModel {
             x: read_memory_signed_int(base_address + 4)?,
             y: read_memory_signed_int(base_address + 8)?,
             z: read_memory_signed_int(base_address + 0xc)? + 10, // field model Z coords are offset by 10
             direction: read_memory_byte(base_address + 0x1c)?,
-            triangle: read_memory_short(model_triangle_address)?,
+            triangle: read_memory_short(base_address_2 + 0x78)?,
+            collision: read_memory_byte(base_address_2 + 0x5f)?,
+            interaction: read_memory_byte(base_address_2 + 0x61)?,
+            visible: read_memory_byte(base_address_2 + 0x62)?,
         };
         models.push(model);
     }

@@ -35,7 +35,7 @@ pub struct FF7Addresses {
     pub field_current_model_id: u32,
     pub field_models_ptr: u32,
     pub field_data_ptr: u32,
-    pub field_model_triangle: u32,
+    pub field_models_objs: u32,
     pub battle_char_array: u32,
     pub battle_char_base: u32,
     pub battle_atb_base: u32,
@@ -76,6 +76,7 @@ pub struct FF7Addresses {
     pub field_script_temp_vars: u32,
     pub zolom_current_ptr: u32,
     pub world_map_type: u32,
+    pub field_file_section1_ptr: u32,
 
     // Frontend fields
     pub field_obj_ptr: u32,
@@ -121,7 +122,7 @@ impl FF7Addresses {
             menu_locks: 0xdc08fa,
             field_movement_disabled: 0xcc0dba,
             field_menu_access_enabled: 0xcc0dbc,
-            field_skip_dialogues: 0x618dc0,
+            field_skip_dialogues: 0x630d54,
             party_locking_mask: 0xdc0ddc,
             party_visibility_mask: 0xdc0dde,
             gil: 0xdc08b4,
@@ -142,7 +143,7 @@ impl FF7Addresses {
             field_current_model_id: 0xcc0db2,
             field_models_ptr: 0xcff738,
             field_data_ptr: 0xcff594,
-            field_model_triangle: 0xcc16e8,
+            field_models_objs: 0xcc1670,
             battle_char_array: 0x9a8db8,
             battle_char_base: 0x9ab0dc,
             battle_atb_base: 0x9a8b12,
@@ -183,6 +184,7 @@ impl FF7Addresses {
             field_script_temp_vars: 0xcc14d0,
             zolom_current_ptr: 0xe2a18c,
             world_map_type: 0xe045e8,
+            field_file_section1_ptr: 0xcbf5e8,
 
             // Frontend fields
             field_obj_ptr: 0xcbf9d8,
