@@ -28,6 +28,7 @@ pub struct FF7BasicData {
     pub unfocus_patch_check: u8,
     pub ffnx_check: u8,
     pub step_id: u32,
+    pub step_offset: u32,
     pub step_fraction: u32,
     pub danger_value: u32,
     pub battle_id: u16,
@@ -46,4 +47,8 @@ pub struct FF7BasicData {
     pub world_map_type: u8,
     pub field_skip_dialogues_check: u8,
     pub field_tmp_vars: Vec<u8>,
+    pub battle_queue: Vec<u8>,
+    pub manual_slots_check: u8,
+    pub slots_active: u8,
+    pub formation_idx: u8,
 } 

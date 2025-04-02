@@ -12,6 +12,7 @@ use types::*;
 pub struct FF7Data {
     pub basic: FF7BasicData,
     pub field_models: Vec<FieldModel>,
+    pub field_lines: Vec<FieldLineObj>,
     pub world_models: Vec<WorldModel>,
     pub battle_allies: Vec<BattleCharObj>,
     pub battle_enemies: Vec<BattleCharObj>,
@@ -25,6 +26,7 @@ pub fn read_data() -> Result<FF7Data, String> {
     Ok(FF7Data {
         basic: read_basic_data(&addresses)?,
         field_models: read_field_models(&addresses)?,
+        field_lines: read_field_line_objs(&addresses)?,
         world_models: read_world_models(&addresses)?,
         battle_allies: read_battle_allies(&addresses)?,
         battle_enemies: read_battle_enemies(&addresses)?,

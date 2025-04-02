@@ -16,6 +16,16 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         read_memory_int(zolom_current_ptr)?
     };
 
+    let slots_active = if read_memory_byte(addresses.slots_active)? > 0 {
+        1
+    } else if read_memory_byte(addresses.slots_active + 1)? > 0 {
+        2
+    } else if read_memory_byte(addresses.slots_active + 2)? > 0 {
+        3
+    } else {
+        0
+    };
+
     Ok(FF7BasicData {
         current_module: read_memory_short(addresses.current_module)?,
         game_moment: read_memory_short(addresses.game_moment)?,
@@ -43,8 +53,10 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         unfocus_patch_check: read_memory_byte(addresses.unfocus_patch_check)?,
         ffnx_check: read_memory_byte(addresses.ffnx_check)?,
         step_id: read_memory_int(addresses.step_id)?,
+        step_offset: read_memory_int(addresses.step_offset)?,
         step_fraction: read_memory_int(addresses.step_fraction)?,
         danger_value: read_memory_int(addresses.danger_value)?,
+        formation_idx: read_memory_byte(addresses.formation_idx)?,
         battle_id: read_memory_short(addresses.battle_id)?,
         invincibility_check: read_memory_short(addresses.battle_init_chars_call)?,
         exp_multiplier: read_memory_byte(addresses.battle_exp_calc + 8)?,
@@ -61,20 +73,35 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         world_map_type: read_memory_byte(addresses.world_map_type)?,
         field_skip_dialogues_check: read_memory_byte(addresses.field_skip_dialogues)?,
         field_tmp_vars: read_memory_buffer(addresses.field_script_temp_vars, 0x20)?,
+        battle_queue: read_memory_buffer(addresses.battle_queue, 8)?,
+        manual_slots_check: read_memory_byte(addresses.cait_manual_slots)?,
+        slots_active: slots_active,
     })
 }
 
 pub fn read_variables_bank(bank: u32, addresses: &FF7Addresses) -> Result<Vec<u8>, String> {
-    Ok(read_memory_buffer(addresses.savemap + 0xba4 + (bank - 1) * 0x100, 0x100)?)
+    if bank == 6 {
+        Ok(read_memory_buffer(addresses.field_script_temp_vars, 0x100)?)
+    } else {
+        Ok(read_memory_buffer(addresses.savemap + 0xba4 + (bank - 1) * 0x100, 0x100)?)
+    }
 }
 
 pub fn write_variable_8bit(bank: u32, address: u32, value: u8, addresses: &FF7Addresses) -> Result<(), String> {
-    write_memory_byte(addresses.savemap + 0xba4 + (bank - 1) * 0x100 + address, value)?;
+    if bank == 6 {
+        write_memory_byte(addresses.field_script_temp_vars + address, value)?;
+    } else {
+        write_memory_byte(addresses.savemap + 0xba4 + (bank - 1) * 0x100 + address, value)?;
+    }
     Ok(())
 }
 
 pub fn write_variable_16bit(bank: u32, address: u32, value: u16, addresses: &FF7Addresses) -> Result<(), String> {
-    write_memory_short(addresses.savemap + 0xba4 + (bank - 1) * 0x100 + address, value)?;
+    if bank == 6 {
+        write_memory_short(addresses.field_script_temp_vars + address, value)?;
+    } else {
+        write_memory_short(addresses.savemap + 0xba4 + (bank - 1) * 0x100 + address, value)?;
+    }
     Ok(())
 }
 

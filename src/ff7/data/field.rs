@@ -1,5 +1,5 @@
 use crate::ff7::addresses::FF7Addresses;
-use crate::ff7::types::field::{FieldData, FieldModel};
+use crate::ff7::types::field::{FieldData, FieldModel, FieldLineObj};
 use crate::utils::memory::*;
 
 pub fn read_field_models(addresses: &FF7Addresses) -> Result<Vec<FieldModel>, String> {
@@ -69,4 +69,26 @@ pub fn read_field_data(addresses: &FF7Addresses) -> Result<FieldData, String> {
         field_model_count,
         field_model_names,
     })
+}
+
+pub fn read_field_line_objs(addresses: &FF7Addresses) -> Result<Vec<FieldLineObj>, String> {
+    let mut field_line_objs = Vec::new();
+
+    for i in 0..32 {
+        let base_address = addresses.field_line_objs + i * 0x18;
+        let field_line_obj = FieldLineObj {
+            x1: read_memory_signed_short(base_address + 0x00)?,
+            y1: read_memory_signed_short(base_address + 0x02)?,
+            z1: read_memory_signed_short(base_address + 0x04)?,
+            x2: read_memory_signed_short(base_address + 0x06)?,
+            y2: read_memory_signed_short(base_address + 0x08)?,
+            z2: read_memory_signed_short(base_address + 0x0a)?,
+            enabled: read_memory_byte(base_address + 0x0c)?,
+            entity: read_memory_byte(base_address + 0x0d)?,
+        };
+        if field_line_obj.entity > 0 {
+            field_line_objs.push(field_line_obj);
+        }
+    }
+    Ok(field_line_objs)
 }
