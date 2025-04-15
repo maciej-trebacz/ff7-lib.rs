@@ -14,7 +14,7 @@ pub fn read_battle_allies(addresses: &FF7Addresses) -> Result<Vec<BattleCharObj>
     let mut party_names = Vec::new();
     for i in 0..3 {
         let name_addr = addresses.party_member_names + party_ids[i as usize] as u32 * 0x84;
-        let decoded_name = read_name(name_addr);
+        let decoded_name = read_name(name_addr, 24);
         party_names.push(decoded_name.unwrap_or_else(|_| String::from("???")));
     }
 
@@ -49,7 +49,7 @@ pub fn read_battle_enemies(addresses: &FF7Addresses) -> Result<Vec<BattleCharObj
         let enemy_scene_idx =
             read_memory_byte(addresses.enemy_obj_base + (i - 4) * enemy_record_length).unwrap_or(0);
         let enemy_name =
-            read_name(addresses.enemy_data_base + u32::from(enemy_scene_idx) * enemy_data_length);
+            read_name(addresses.enemy_data_base + u32::from(enemy_scene_idx) * enemy_data_length, 24);
 
         let char = BattleCharObj {
             index: i as u8,
@@ -152,4 +152,18 @@ pub fn read_enemy_data(id: u32) -> Result<EnemyData, String> {
         items,
         morph,
     })
+}
+
+pub fn read_enemy_attack_names(addresses: &FF7Addresses) -> Result<Vec<String>, String> {
+    let mut attack_names: Vec<String> = Vec::new();
+    for i in 0..32 {
+        let check = read_memory_byte(addresses.enemy_attack_names + i * 32)?;
+        if check != 0xFF {
+            let name = read_name(addresses.enemy_attack_names + i * 32, 32);
+            attack_names.push(name.unwrap_or_else(|_| String::from("???")));
+        } else {
+            attack_names.push(String::from(""));
+        }
+    }
+    Ok(attack_names)
 }

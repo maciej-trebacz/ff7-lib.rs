@@ -1,5 +1,5 @@
 use crate::ff7::addresses::FF7Addresses;
-use crate::ff7::types::general::FF7BasicData;
+use crate::ff7::types::general::{FF7BasicData, GameModule};
 use crate::utils::memory::*;
 
 pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String> {
@@ -26,8 +26,10 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         0
     };
 
+    let current_module = read_memory_byte(addresses.current_module)?;
+
     Ok(FF7BasicData {
-        current_module: read_memory_short(addresses.current_module)?,
+        current_module: current_module,
         game_moment: read_memory_short(addresses.game_moment)?,
         field_id: read_memory_short(addresses.field_id)?,
         field_fps: read_memory_float(addresses.field_fps)?,
@@ -76,6 +78,7 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         battle_queue: read_memory_buffer(addresses.battle_queue, 8)?,
         manual_slots_check: read_memory_byte(addresses.cait_manual_slots)?,
         slots_active: slots_active,
+        walk_anywhere_check: read_memory_byte(addresses.world_walk_anywhere_1)?,
     })
 }
 

@@ -9,7 +9,7 @@ pub fn read_party_members(addresses: &FF7Addresses) -> Result<Vec<PartyMember>, 
   for i in 0..9 {
     let base_addr = addresses.character_records + i as u32 * CHAR_RECORD_LENGTH;
     let name_addr = base_addr + 0x10;
-    let decoded_name = read_name(name_addr)?;
+    let decoded_name = read_name(name_addr, 24)?;
     party_members.push(PartyMember { 
       id: read_memory_byte(base_addr)?, 
       name: decoded_name,

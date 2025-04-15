@@ -51,6 +51,7 @@ pub struct FF7Addresses {
     pub battle_init_chars_call: u32,
     pub enemy_obj_base: u32,
     pub enemy_data_base: u32,
+    pub enemy_attack_names: u32,
     pub world_current_obj_ptr: u32,
     pub kernel_read_fn_call: u32,
     pub kernel_section_offsets: u32,
@@ -85,6 +86,10 @@ pub struct FF7Addresses {
     pub tifa_manual_slots: u32,
     pub arena_manual_slots: u32,
     pub slots_active: u32,
+    pub kernel_item_data: u32,
+    pub battle_obj_ptr: u32,
+    pub world_walk_anywhere_1: u32,
+    pub world_walk_anywhere_2: u32,
 
     // Frontend fields
     pub field_obj_ptr: u32,
@@ -167,6 +172,7 @@ impl FF7Addresses {
             battle_init_chars_call: 0x437efe,
             enemy_obj_base: 0x9a8794,
             enemy_data_base: 0x9a8e9c,
+            enemy_attack_names: 0x9a9484,
             world_current_obj_ptr: 0xe3a7d0,
             kernel_read_fn_call: 0x419458,
             kernel_section_offsets: 0x9a7fc8,
@@ -201,6 +207,10 @@ impl FF7Addresses {
             tifa_manual_slots: 0x6e322c,
             arena_manual_slots: 0x6e3a9a,
             slots_active: 0xdc2082,
+            kernel_item_data: 0xdbd160,
+            battle_obj_ptr: 0x99ce0c,
+            world_walk_anywhere_1: 0x74ced3,
+            world_walk_anywhere_2: 0x766705,
 
             // Frontend fields
             field_obj_ptr: 0xcbf9d8,

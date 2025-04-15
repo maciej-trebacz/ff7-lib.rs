@@ -1,8 +1,32 @@
 use serde::Serialize;
 
 #[derive(Serialize)]
+pub enum GameModule {
+    None = 0,
+    Field = 1,
+    Battle = 2,
+    World = 3,
+    Menu = 5,
+    Highway = 6,
+    Chocobo = 7,
+    SnowBoard = 8,
+    Condor = 9,
+    Submarine = 10,
+    Jet = 11,
+    ChangeDisc = 12,
+    Snowboard2 = 14,
+    Quit = 19,
+    Start = 20,
+    BattleSwirl = 23,
+    Ending = 25,
+    GameOver = 26,
+    Intro = 27,
+    Credits = 28,
+}
+
+#[derive(Serialize)]
 pub struct FF7BasicData {
-    pub current_module: u16,
+    pub current_module: u8,
     pub game_moment: u16,
     pub field_id: u16,
     pub field_fps: f64,
@@ -51,4 +75,5 @@ pub struct FF7BasicData {
     pub manual_slots_check: u8,
     pub slots_active: u8,
     pub formation_idx: u8,
+    pub walk_anywhere_check: u8,
 } 
