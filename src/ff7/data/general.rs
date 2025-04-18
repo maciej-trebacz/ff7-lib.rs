@@ -62,6 +62,7 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         battle_id: read_memory_short(addresses.battle_id)?,
         invincibility_check: read_memory_short(addresses.battle_init_chars_call)?,
         exp_multiplier: read_memory_byte(addresses.battle_exp_calc + 8)?,
+        gil_multiplier: read_memory_byte(addresses.battle_exp_calc + 35)?,
         ap_multiplier: read_memory_byte(addresses.battle_ap_calc + 2)?,
         battle_chocobo_rating: read_memory_byte(addresses.battle_chocobo_rating)?,
         menu_always_enabled: read_memory_byte(addresses.menu_always_enabled)?,

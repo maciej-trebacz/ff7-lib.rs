@@ -58,6 +58,7 @@ pub struct FF7BasicData {
     pub battle_id: u16,
     pub invincibility_check: u16,
     pub exp_multiplier: u8,
+    pub gil_multiplier: u8,
     pub ap_multiplier: u8,
     pub battle_chocobo_rating: u8,
     pub menu_always_enabled: u8,
