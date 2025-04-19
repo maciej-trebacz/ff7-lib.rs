@@ -80,6 +80,8 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         manual_slots_check: read_memory_byte(addresses.cait_manual_slots)?,
         slots_active: slots_active,
         walk_anywhere_check: read_memory_byte(addresses.world_walk_anywhere_1)?,
+        love_points: read_memory_buffer(addresses.love_points, 4)?,
+        battle_points: read_memory_short(addresses.battle_points)?,
     })
 }
 

@@ -77,4 +77,6 @@ pub struct FF7BasicData {
     pub slots_active: u8,
     pub formation_idx: u8,
     pub walk_anywhere_check: u8,
+    pub love_points: Vec<u8>,
+    pub battle_points: u16,
 } 

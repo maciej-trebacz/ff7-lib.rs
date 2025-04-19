@@ -118,10 +118,13 @@ pub struct FF7Addresses {
     pub menu_load_key_items_fn: u32,
     pub world_load_data_fn: u32,
     pub str_field_tbl: u32,
+    pub love_points: u32,
+    pub battle_points: u32,
 }
 
 impl FF7Addresses {
     pub fn new() -> Self {
+        let savemap = 0xdbfd38;
         FF7Addresses {
             current_module: 0xcbf9dc,
             game_moment: 0xdc08dc,
@@ -195,7 +198,7 @@ impl FF7Addresses {
             party_objects: 0xdba498,
             world_field_tbl_data: 0xe37d30,
             world_mes_data: 0xe36120,
-            savemap: 0xdbfd38,
+            savemap: savemap,
             field_script_obj_ptr: 0xcc0b60,
             field_script_temp_vars: 0xcc14d0,
             zolom_current_ptr: 0xe2a18c,
@@ -239,6 +242,8 @@ impl FF7Addresses {
             menu_load_key_items_fn: 0x714fa3,
             world_load_data_fn: 0x75931b,
             str_field_tbl: 0x969b10,
+            love_points: savemap + 0xba7,
+            battle_points: savemap + 0xcf4,
         }
     }
 }
