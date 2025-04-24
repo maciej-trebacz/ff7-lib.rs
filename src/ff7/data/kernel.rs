@@ -96,7 +96,7 @@ pub fn read_item_data(addresses: &FF7Addresses) -> Result<Vec<ItemData>, String>
         let item_addr = addr + i * 28;
         let item_data = ItemData {
             camera_move_id: read_memory_short(item_addr + 0x08)? as u16,
-            restriction_mask: flip_bits(read_memory_short(item_addr + 0x0a)? as u16),
+            restriction_mask: read_memory_short(item_addr + 0x0a)? as u16,
             target_flags: read_memory_byte(item_addr + 0x0c)? as u8,
             attack_effect_id: read_memory_byte(item_addr + 0x0d)? as u8,
             damage_func: read_memory_byte(item_addr + 0x0e)? as u8,

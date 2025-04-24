@@ -120,6 +120,7 @@ pub struct FF7Addresses {
     pub str_field_tbl: u32,
     pub love_points: u32,
     pub battle_points: u32,
+    pub battle_party_items: u32,
 }
 
 impl FF7Addresses {
@@ -244,6 +245,7 @@ impl FF7Addresses {
             str_field_tbl: 0x969b10,
             love_points: savemap + 0xba7,
             battle_points: savemap + 0xcf4,
+            battle_party_items: 0x9ac354,
         }
     }
 }
