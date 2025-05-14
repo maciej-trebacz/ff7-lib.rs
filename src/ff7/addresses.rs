@@ -90,6 +90,7 @@ pub struct FF7Addresses {
     pub battle_obj_ptr: u32,
     pub world_walk_anywhere_1: u32,
     pub world_walk_anywhere_2: u32,
+    pub data_cave: u32,
 
     // Frontend fields
     pub field_obj_ptr: u32,
@@ -215,6 +216,7 @@ impl FF7Addresses {
             battle_obj_ptr: 0x99ce0c,
             world_walk_anywhere_1: 0x74ced3,
             world_walk_anywhere_2: 0x766705,
+            data_cave: 0x7c0cc4,
 
             // Frontend fields
             field_obj_ptr: 0xcbf9d8,
