@@ -1,5 +1,5 @@
 use crate::ff7::addresses::FF7Addresses;
-use crate::ff7::types::general::{FF7BasicData, GameModule};
+use crate::ff7::types::general::{FF7BasicData};
 use crate::utils::memory::*;
 
 pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String> {

@@ -1,6 +1,6 @@
 [package]
 name = "ff7-lib"
-version = "1.4.5"
+version = "1.6.0"
 edition = "2021"
 authors = ["m4v3r"]
 description = "FF7 memory manipulation and data structures library"

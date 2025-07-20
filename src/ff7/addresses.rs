@@ -174,7 +174,7 @@ impl FF7Addresses {
             code_cave: 0x41be87,
             code_cave_fn_caller: 0x41c000,
             battle_init_chars_fn: 0x5cf650,
-            battle_init_chars_call: 0x437efe,
+            battle_init_chars_call: 0x437efd,
             enemy_obj_base: 0x9a8794,
             enemy_data_base: 0x9a8e9c,
             enemy_attack_names: 0x9a9484,

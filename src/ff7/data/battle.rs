@@ -218,7 +218,6 @@ pub fn read_scene_bin_from_path(scene_bin_path: &Path) -> Result<Vec<Scene>, Str
                         scene_offsets.push((block_header * 4) as usize);
                         pos += 4; // Increment overall position tracker based on header reads
                     } else {
-                        pos += 4; // Still consumed 4 bytes for the terminator
                         break; // End of headers for this block
                     }
                 }
