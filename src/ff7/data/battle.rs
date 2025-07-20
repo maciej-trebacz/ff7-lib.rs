@@ -21,7 +21,7 @@ pub fn read_battle_allies(addresses: &FF7Addresses) -> Result<Vec<BattleCharObj>
     let mut party_names = Vec::new();
     for i in 0..3 {
         let name_addr = addresses.party_member_names + party_ids[i as usize] as u32 * 0x84;
-        let decoded_name = read_name(name_addr, 24);
+        let decoded_name = read_name(name_addr, 15);
         party_names.push(decoded_name.unwrap_or_else(|_| String::from("???")));
     }
 

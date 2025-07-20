@@ -19,7 +19,7 @@ pub fn read_party_members(addresses: &FF7Addresses) -> Result<Vec<PartyMember>, 
   for i in 0..9 {
     let base_addr = addresses.character_records + i as u32 * CHAR_RECORD_LENGTH;
     let name_addr = base_addr + 0x10;
-    let decoded_name = read_name(name_addr, 24)?;
+    let decoded_name = read_name(name_addr, 15)?;
     
     let mut weapon_materia = Vec::with_capacity(8);
     for j in 0..8 {
