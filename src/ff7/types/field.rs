@@ -1,4 +1,20 @@
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct Light {
+    pub color: [u8; 3], // RGB
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct FieldLights {
+    pub global_light_color: [u8; 3], // RGB
+    pub light1: Light,
+    pub light2: Light,
+    pub light3: Light,
+}
 
 #[derive(Serialize)]
 pub struct FieldModel {
@@ -10,6 +26,7 @@ pub struct FieldModel {
     pub collision: u8,
     pub interaction: u8,
     pub visible: u8,
+    pub lights: FieldLights,
 }
 
 #[derive(Serialize)]
