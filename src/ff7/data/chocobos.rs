@@ -42,6 +42,7 @@ pub fn read_chocobo_data(addresses: &FF7Addresses) -> Result<ChocoboData, String
                 races_won: read_memory_byte(base_addr + 0xD)?,
                 sex: read_memory_byte(base_addr + 0xE)?,
                 color: read_memory_byte(base_addr + 0xF)?,
+                rating: read_memory_byte(savemap + 0xE3E + i as u32)?,
             });
         }
     }
@@ -102,6 +103,7 @@ pub fn write_chocobo_slot(addresses: &FF7Addresses, slot_index: usize, chocobo: 
     write_memory_byte(base_addr + 0xD, chocobo.races_won)?;
     write_memory_byte(base_addr + 0xE, chocobo.sex)?;
     write_memory_byte(base_addr + 0xF, chocobo.color)?;
+    write_memory_byte(savemap + 0xE3E + slot_index as u32, chocobo.rating)?;
     
     Ok(())
 }

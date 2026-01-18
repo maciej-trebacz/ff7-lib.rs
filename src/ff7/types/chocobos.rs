@@ -12,6 +12,7 @@ pub struct ChocoboSlot {
     pub personality: u8,
     pub pcount: u8,
     pub races_won: u8,
+    pub rating: u8,
     pub sex: u8, // 1 = female, 0 = male
     pub color: u8, // 0=Yellow, 1=Green, 2=Blue, 3=Black, 4=Gold
 }

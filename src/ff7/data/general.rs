@@ -42,6 +42,7 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         menu_locks: read_memory_short(addresses.menu_locks)?,
         field_movement_disabled: read_memory_byte(addresses.field_movement_disabled)?,
         field_menu_access_enabled: read_memory_byte(addresses.field_menu_access_enabled)?,
+        field_alt_encounters_enabled: read_memory_byte(addresses.field_alt_encounters_enabled)?,
         party_locking_mask: read_memory_short(addresses.party_locking_mask)?,
         party_visibility_mask: read_memory_short(addresses.party_visibility_mask)?,
         gil: read_memory_int(addresses.gil)?,
@@ -62,8 +63,11 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         battle_id: read_memory_short(addresses.battle_id)?,
         invincibility_check: read_memory_short(addresses.battle_init_chars_call)?,
         exp_multiplier: read_memory_byte(addresses.battle_exp_calc + 8)?,
+        exp_multiplier_mode: read_memory_byte(addresses.battle_exp_calc + 6)?,
         gil_multiplier: read_memory_byte(addresses.battle_exp_calc + 35)?,
+        gil_multiplier_mode: read_memory_byte(addresses.battle_exp_calc + 33)?,
         ap_multiplier: read_memory_byte(addresses.battle_ap_calc + 2)?,
+        ap_multiplier_mode: read_memory_byte(addresses.battle_ap_calc)?,
         battle_chocobo_rating: read_memory_byte(addresses.battle_chocobo_rating)?,
         menu_always_enabled: read_memory_byte(addresses.menu_always_enabled)?,
         world_zoom_tilt_enabled: read_memory_byte(addresses.world_zoom_tilt_enabled)?,
@@ -82,6 +86,8 @@ pub fn read_basic_data(addresses: &FF7Addresses) -> Result<FF7BasicData, String>
         walk_anywhere_check: read_memory_byte(addresses.world_walk_anywhere_1)?,
         love_points: read_memory_buffer(addresses.love_points, 4)?,
         battle_points: read_memory_short(addresses.battle_points)?,
+        auto_sense_check: read_memory_byte(addresses.auto_sense_check)?,
+        field_run_by_default_check: read_memory_byte(addresses.field_run_by_default_1)?,
     })
 }
 

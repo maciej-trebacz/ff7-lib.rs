@@ -15,6 +15,7 @@ pub struct FF7Addresses {
     pub field_movement_disabled: u32,
     pub field_menu_access_enabled: u32,
     pub field_skip_dialogues: u32,
+    pub field_alt_encounters_enabled: u32,
     pub party_locking_mask: u32,
     pub party_visibility_mask: u32,
     pub gil: u32,
@@ -37,6 +38,7 @@ pub struct FF7Addresses {
     pub field_current_model_id: u32,
     pub field_models_ptr: u32,
     pub field_data_ptr: u32,
+    pub field_section_offsets: u32,
     pub field_models_objs: u32,
     pub battle_char_array: u32,
     pub battle_char_base: u32,
@@ -92,6 +94,9 @@ pub struct FF7Addresses {
     pub world_walk_anywhere_1: u32,
     pub world_walk_anywhere_2: u32,
     pub data_cave: u32,
+    pub auto_sense_check: u32,
+    pub field_run_by_default_1: u32,
+    pub field_run_by_default_2: u32,
 
     // Frontend fields
     pub field_obj_ptr: u32,
@@ -141,6 +146,7 @@ impl FF7Addresses {
             menu_locks: 0xdc08fa,
             field_movement_disabled: 0xcc0dba,
             field_menu_access_enabled: 0xcc0dbc,
+            field_alt_encounters_enabled: 0xcc0dc4,
             field_skip_dialogues: 0x630d54,
             party_locking_mask: 0xdc0ddc,
             party_visibility_mask: 0xdc0dde,
@@ -163,6 +169,7 @@ impl FF7Addresses {
             field_num_models: 0xcff73e,
             field_current_model_id: 0xcc0db2,
             field_models_ptr: 0xcff738,
+            field_section_offsets: 0xcff570,
             field_data_ptr: 0xcff594,
             field_models_objs: 0xcc1670,
             battle_char_array: 0x9a8db8,
@@ -219,6 +226,9 @@ impl FF7Addresses {
             world_walk_anywhere_1: 0x74ced3,
             world_walk_anywhere_2: 0x766705,
             data_cave: 0x7c0cc4,
+            auto_sense_check: 0x4198d4,
+            field_run_by_default_1: 0x63767d,
+            field_run_by_default_2: 0x634992,
 
             // Frontend fields
             field_obj_ptr: 0xcbf9d8,

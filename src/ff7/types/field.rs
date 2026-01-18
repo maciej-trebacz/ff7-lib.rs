@@ -26,6 +26,8 @@ pub struct FieldModel {
     pub collision: u8,
     pub interaction: u8,
     pub visible: u8,
+    pub collision_range: u16,
+    pub talk_range: u16,
     pub lights: FieldLights,
 }
 
@@ -47,4 +49,26 @@ pub struct FieldLineObj {
     pub z2: i16,
     pub enabled: u8,
     pub entity: u8,
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct EncounterPair {
+    pub encounter_id: u16, // 0..1023 (10 bits)
+    pub rate: u8,          // 0..63 (6 bits)
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct FieldEncounterSet {
+    pub active: bool,
+    pub encounter_rate: u8, // 0..255
+    pub normal_encounters: Vec<EncounterPair>, // length 6
+    pub back_attacks: Vec<EncounterPair>,      // length 2
+    pub side_attack: EncounterPair,            // length 1
+    pub pincer_attack: EncounterPair,          // length 1
+}
+
+#[derive(Serialize)]
+pub struct FieldEncounterTables {
+    pub table1: FieldEncounterSet,
+    pub table2: FieldEncounterSet,
 }

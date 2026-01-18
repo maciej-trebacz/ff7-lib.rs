@@ -1,5 +1,5 @@
 use crate::ff7::addresses::FF7Addresses;
-use crate::ff7::types::field::{FieldData, FieldModel, FieldLineObj, FieldLights, Light};
+use crate::ff7::types::field::{FieldData, FieldModel, FieldLineObj, FieldLights, Light, FieldEncounterTables, FieldEncounterSet, EncounterPair};
 use crate::utils::memory::*;
 
 fn read_f32_from_memory(address: u32) -> Result<f32, String> {
@@ -107,6 +107,8 @@ pub fn read_field_models(addresses: &FF7Addresses) -> Result<Vec<FieldModel>, St
             collision: read_memory_byte(base_address_2 + 0x5f)?,
             interaction: read_memory_byte(base_address_2 + 0x61)?,
             visible: read_memory_byte(base_address_2 + 0x62)?,
+            collision_range: read_memory_short(base_address_2 + 0x72)?,
+            talk_range: read_memory_short(base_address_2 + 0x74)?,
             lights,
         };
         models.push(model);
@@ -247,4 +249,75 @@ pub fn write_field_lights(lights: &FieldLights, model_index: u32, addresses: &FF
     write_f32_to_memory(light_obj_ptr + 48, global_a)?;
 
     Ok(())
+}
+
+fn decode_encounter_pair(packed: u16) -> EncounterPair {
+    EncounterPair {
+        rate: (packed >> 10) as u8,
+        encounter_id: packed & 0x3ff,
+    }
+}
+
+fn read_encounter_set(base_address: u32) -> Result<FieldEncounterSet, String> {
+    let enabled = read_memory_byte(base_address)?;
+    let encounter_rate = read_memory_byte(base_address + 1)?;
+    
+    let mut normal_encounters = Vec::new();
+    for i in 0..6 {
+        let packed = read_memory_short(base_address + 2 + i * 2)?;
+        normal_encounters.push(decode_encounter_pair(packed));
+    }
+    
+    let mut back_attacks = Vec::new();
+    for i in 0..2 {
+        let packed = read_memory_short(base_address + 14 + i * 2)?;
+        back_attacks.push(decode_encounter_pair(packed));
+    }
+    
+    let side_attack_packed = read_memory_short(base_address + 18)?;
+    let side_attack = decode_encounter_pair(side_attack_packed);
+    
+    let pincer_attack_packed = read_memory_short(base_address + 20)?;
+    let pincer_attack = decode_encounter_pair(pincer_attack_packed);
+    
+    Ok(FieldEncounterSet {
+        active: enabled != 0,
+        encounter_rate,
+        normal_encounters,
+        back_attacks,
+        side_attack,
+        pincer_attack,
+    })
+}
+
+fn empty_encounter_set() -> FieldEncounterSet {
+    FieldEncounterSet {
+        active: false,
+        encounter_rate: 0,
+        normal_encounters: Vec::new(),
+        back_attacks: Vec::new(),
+        side_attack: EncounterPair { rate: 0, encounter_id: 0 },
+        pincer_attack: EncounterPair { rate: 0, encounter_id: 0 },
+    }
+}
+
+pub fn read_field_encounters(addresses: &FF7Addresses) -> Result<FieldEncounterTables, String> {
+    let field_data_ptr = read_memory_int(addresses.field_data_ptr)?;
+    if field_data_ptr == 0 {
+        return Ok(FieldEncounterTables {
+            table1: empty_encounter_set(),
+            table2: empty_encounter_set(),
+        });
+    }
+    
+    let section7_offset = read_memory_int(addresses.field_section_offsets + 6 * 4)?;
+    let encounter_data_addr = field_data_ptr + 4 + section7_offset;
+    
+    let table1 = read_encounter_set(encounter_data_addr)?;
+    let table2 = read_encounter_set(encounter_data_addr + 24)?;
+    
+    Ok(FieldEncounterTables {
+        table1,
+        table2,
+    })
 }
