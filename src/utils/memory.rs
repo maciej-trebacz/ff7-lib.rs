@@ -1,7 +1,10 @@
 use crate::utils::process;
 use process_memory::{CopyAddress, DataMember, Memory, PutAddress, ProcessHandle};
 use std::backtrace::Backtrace;
+
+#[cfg(windows)]
 use winapi::um::memoryapi::VirtualProtectEx;
+#[cfg(windows)]
 use winapi::um::winnt::{PAGE_EXECUTE_READWRITE, PVOID};
 
 fn handle_memory_error(err: impl std::fmt::Display, address: u32) -> String {
@@ -109,23 +112,33 @@ pub fn write_memory_float(address: u32, new_value: f64) -> Result<(), String> {
     write_memory::<f64>(address, new_value)
 }
 
-pub fn set_memory_protection(address: u32, size: usize) -> Result<(), String> {
-    let handle = get_process_handle()?;
-    let mut old_protect = 0;
+pub fn set_memory_protection(_address: u32, _size: usize) -> Result<(), String> {
+    #[cfg(windows)]
+    {
+        let handle = get_process_handle()?;
+        let mut old_protect = 0;
 
-    let result = unsafe {
-        VirtualProtectEx(
-            handle.0,
-            address as PVOID,
-            size,
-            PAGE_EXECUTE_READWRITE,
-            &mut old_protect,
-        )
-    };
+        let result = unsafe {
+            VirtualProtectEx(
+                handle.0,
+                address as PVOID,
+                size,
+                PAGE_EXECUTE_READWRITE,
+                &mut old_protect,
+            )
+        };
 
-    if result == 0 {
-        Err(handle_memory_error("Failed to change memory protection", address))
-    } else {
-        Ok(())
+        if result == 0 {
+            Err(handle_memory_error("Failed to change memory protection", address))
+        } else {
+            Ok(())
+        }
+    }
+    
+    #[cfg(not(windows))]
+    {
+        // Memory protection changes are not supported on non-Windows platforms
+        // This is typically used for game memory patching which only works on Windows
+        Err("Memory protection changes are only supported on Windows".to_string())
     }
 }

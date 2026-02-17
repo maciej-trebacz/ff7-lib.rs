@@ -99,7 +99,7 @@ impl ProcessScanner {
                 match found_process {
                     Some(pid) => {
                         if info.handle.is_none() || info.previous_pid != Some(pid) {
-                            let proc_pid: ProcPid = pid.as_u32().into();
+                            let proc_pid: ProcPid = (pid.as_u32() as i32).into();
                             info.handle = proc_pid.try_into_process_handle().ok();
                         }
                     }
